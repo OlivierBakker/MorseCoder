@@ -1,6 +1,7 @@
 import socket
 import Coder
 
+
 class Client():
 
     def __init__(self, ip='192.168.2.38', port=5005, buffer_size=1024,):
@@ -8,7 +9,7 @@ class Client():
         self.tcp_ip = ip
         self.tcp_port = port
         self.buffer_size = buffer_size
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket = None
 
     def __del__(self):
         self.socket.close()
@@ -29,9 +30,17 @@ class Client():
         self.socket.close()
 
 
-c = Client()
-c.connect()
-msg = ['... --- ...', '... --- ...']
-mc = Coder.MorseCode(morse_code=msg)
-print(c.send(mc.__bytes__()))
+if __name__ == '__main__':
+
+    c = Client()
+    c.connect()
+
+    while True:
+        try:
+            input('press enter to continue...')
+            msg = ['... --- ...', '.... -.- .--']
+            mc = Coder.MorseCode(morse_code=msg)
+            print(c.send(mc.__bytes__()))
+        except KeyboardInterrupt:
+            break
 

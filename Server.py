@@ -1,26 +1,42 @@
 import socket
 
+class Server():
 
-def launch():
+    def __init__(self, ip='192.168.2.38', port=5005, buffer_size=1024):
+        self.ip = ip
+        self.port = port
+        self.buffer_size = buffer_size
+        self.socket = None
+        self.conn = None
 
-    TCP_IP = '192.168.2.38'
-    TCP_PORT = 5005
-    BUFFER_SIZE = 1024 # Normally 1024, but we want fast response
+    def bind_ip(self):
 
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind((TCP_IP, TCP_PORT))
-        s.listen(1)
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.bind((self.ip, self.port))
 
-        conn, addr = s.accept()
-        print('Connection address:', addr)
-        while 1:
-            data = conn.recv(BUFFER_SIZE)
-            if not data: break
-            print("received data:", data)
-            conn.send(data)  # echo
-        conn.close()
-    except:
-        conn.close()
-        exit()
-launch()
+    def close_conn(self):
+        self.conn.send('acknowlidged')
+        self.conn.close()
+
+    def listen(self):
+
+        while True:
+
+            self.socket.listen(1)
+            self.conn, addr = self.socket.accept()
+            print('Connection address:', addr)
+
+            while True:
+                data = self.conn.recv(self.buffer_size)
+                if not data:
+                    break
+
+                print("received data:", data)
+                #conn.send(data)  # echo
+
+
+if __name__ == '__main__':
+
+    s = Server()
+    s.bind_ip()
+    s.listen()

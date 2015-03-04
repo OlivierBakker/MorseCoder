@@ -1,6 +1,4 @@
-__author__ = 'Florian'
-import serial
-import re
+#import serial
 
 
 class SerialReader():
@@ -17,6 +15,7 @@ class SerialReader():
 
     def flush(self):
         self.conn.flushInput()
+
 
 class CsvWriter():
 

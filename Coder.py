@@ -1,4 +1,5 @@
 import re
+import array
 import SerialInterface
 
 
@@ -61,6 +62,9 @@ class MorseCode():
 
     def __iter__(self):
         return self
+
+    def __bytes__(self):
+        return '|'.join(self.morse_code).encode('utf-8')
 
     def __eq__(self, other):
 
@@ -187,9 +191,12 @@ class MorseParser():
             except EndOfMessage:
                 return self.join_queue()
 
+
+
 #msg = MorseParser().read()
-# msg = ['... --- ...', '... --- ...']
-# mc = MorseCode(morse_code=msg)
+msg = ['... --- ...', '... --- ...']
+mc = MorseCode(morse_code=msg)
+print(mc.__bytes__())
 # print(mc)
 #
 # msg_2 = 'SOS|SOS'
